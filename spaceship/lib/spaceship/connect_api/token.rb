@@ -50,6 +50,10 @@ module Spaceship
         in_house ||= !["", "no", "false", "off", "0"].include?(in_house_env) if in_house_env
 
         key ||= ENV['SPACESHIP_CONNECT_API_KEY']
+        
+        if key.nil? && !filepath.nil? && !File.file?(filepath)
+          raise "Provided App Store Connect API key file path could not be found: #{filepath}"
+        end
         key ||= File.binread(filepath)
 
         if !key.nil? && is_key_content_base64
